@@ -26,7 +26,7 @@ for line in read_input():
     check = abs(number_list[n]-number_list[n+1])
     if 0 < check < len(number_list):
       check_list[check] = True
-  if len(set(check_list)) == 1 and check_list[1]:
+  if len(set(check_list)) == 1 and check_list[1]: # more optimal: check_list.count(check_list[0]) == len(check_list)
     print "Jolly"
   else:
     print "Not Jolly"
