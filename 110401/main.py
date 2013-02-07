@@ -1,7 +1,6 @@
 def medianish(list_of_ints):
-  list_of_ints.sort()
   middle = len(list_of_ints) / 2
-  return list_of_ints[middle]
+  return sorted(list_of_ints)[middle]
 
 
 import sys
