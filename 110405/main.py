@@ -39,7 +39,10 @@ def job_order(case):
   if len(case) == 1:
     return "%i" % case[0][0]
   else:
-    return "%i %s" % (sorted(case, job_cost_cmp)[0][0], job_order(sorted(case, job_cost_cmp)[1:]))
+    sorted_jobs = sorted(case, job_cost_cmp)
+    cheapest_job = sorted_jobs[0]
+    other_jobs = sorted_jobs[1:]
+    return "%i %s" % (cheapest_job[0], job_order(other_jobs))
 
 for case in cases:
   print job_order(case)
