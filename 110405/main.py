@@ -35,14 +35,11 @@ cases = [[tuple([n+1]+[int(x) for x in item.split()]) for n, item in enumerate(r
 def job_cost_cmp(job, otherjob):
   return job[1]*otherjob[2] - otherjob[1]*job[2] if not 0 else job[0]-otherjob[0]
 
-def sorted_case(case):
-  return sorted(case, job_cost_cmp)
-
 def job_order(case):
   if len(case) == 1:
     return "%i" % case[0][0]
   else:
-    return "%i %s" % (sorted_case(case)[0][0], job_order(sorted_case(case)[1:]))
+    return "%i %s" % (sorted(case, job_cost_cmp)[0][0], job_order(sorted(case, job_cost_cmp)[1:]))
 
 for case in cases:
   print job_order(case)
