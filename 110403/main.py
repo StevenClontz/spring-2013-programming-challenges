@@ -21,11 +21,17 @@ groups = [sorted([int(speed) for speed in raw_group[1:]]) for raw_group in raw_g
 # Solution: consider integers i_0, i_1, ..., i_{k-2}, i_{k-1}. 
 # We want to minimize cost - best we can do is hide i_{k-even} by pairing with i_{k-nextodd}.
 # We'll need to utilize i_0, i_1 to most quickly move the torch back from right to left.
-# Pattern:
-  # i_0, i_1 to right
-  # i_0, to left
-  # i_{k-2}, i_{k-1} to right
-  # i_1 to left
+# Patterns:
+  # Cost: i_0+2i_1+i_{k-1}
+    # i_0, i_1 to right
+    # i_0 to left
+    # i_{k-2}, i_{k-1} to right
+    # i_1 to left
+  # Cost: 2*i_0+i_{k-2}+i_{k-1}
+    # i_0, i_{k-1} to right
+    # i_0 to left
+    # i_0, i_{k-2} to right
+    # i_0 to left
 # Continue by recursion until just two or three left.
 # Two left:
   # i_0, i_1 to right
@@ -35,21 +41,31 @@ groups = [sorted([int(speed) for speed in raw_group[1:]]) for raw_group in raw_g
   # i_0, i_1 to right
 # For simplicity we won't actually move things right and left, we'll just keep track of how we would.
 
-for group in groups:
+for group in groups: # [1, 5, 9, 100, 103]
   left = group[:]
   moves = []
   cost = 0
   while left != []:
     if len(left) > 3:
-      # use basic pattern
-      moves += [
-        "%i %i" % (left[0], left[1]),
-        "%i" % left[0],
-        "%i %i" % (left[-2], left[-1]),
-        "%i" % left[1]
-        ]
-      # track cost of these moves
-      cost += left[0]+2*left[1]+left[-1]
+      # check two patterns
+      if left[0]+2*left[1]+left[-1] < 2*left[0]+left[-2] + left[-1]:
+        moves += [
+          "%i %i" % (left[0], left[1]),
+          "%i" % left[0],
+          "%i %i" % (left[-2], left[-1]),
+          "%i" % left[1]
+          ]
+        # track cost of these moves
+        cost += left[0]+2*left[1]+left[-1]
+      else:
+        moves += [
+          "%i %i" % (left[0], left[-1]),
+          "%i" % left[0],
+          "%i %i" % (left[0], left[-2]),
+          "%i" % left[0]
+          ]
+        # track cost of these moves
+        cost += 2*left[0]+left[-2]+left[-1]
       # remove last two from the list
       left = left[:-2]
     elif len(left) == 3:
@@ -63,13 +79,22 @@ for group in groups:
       cost += left[0]+left[1]+left[2]
       # we've done it!
       left = []
-    else: # len(left)==2
+    elif len(left) == 2: # len(left)==2
       # use two pattern
       moves += [
         "%i %i" % (left[0], left[1])
         ]
       # track cost of this move
       cost += left[1]
+      # we've done it!
+      left = []
+    else: # len(left) = 1
+      # use one pattern
+      moves += [
+        "%i" % left[0]
+        ]
+      # track cost of this move
+      cost += left[0]
       # we've done it!
       left = []
   # let's print the results!
