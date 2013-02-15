@@ -2,7 +2,7 @@
 import sys
 readlines = sys.stdin.readlines()
 
-# want to break input into chunks delimited by '\n'
+# want to break input into chunks delimited by empty line '\n'
 import itertools
 keyfunc = lambda x: x == '\n'
 raw_groups = [list(group) for is_key, group in itertools.groupby(readlines, keyfunc) if not is_key]
@@ -13,14 +13,21 @@ raw_groups = raw_groups[1:]
 # clean the rest of it up - 1st in each group is redundant, make entries integers, want sorted
 groups = [sorted([int(speed) for speed in raw_group[1:]]) for raw_group in raw_groups]
 
+# groups is of the form:
+  # [
+  #   [1, 3, 38, 92, 101],
+  #   [39, 291, 293],
+  #   [8],
+  #   [1, 2, 3, 4, 5, 6, 7, 8, 9, 11]
+  # ]
+
 # Bridge puzzle: place each group in the left set, and move them by one or two to the right set.
 # This is followed by one or two moving from the right set to the left set.
 # Each move costs an integer equal to the larger interger moved.
 # We want to minimize total cost.
 
 # Solution: consider integers i_0, i_1, ..., i_{k-2}, i_{k-1}. 
-# We want to minimize cost - best we can do is hide i_{k-even} by pairing with i_{k-nextodd}.
-# We'll need to utilize i_0, i_1 to most quickly move the torch back from right to left.
+# We want to minimize cost. We'll need to utilize i_0 and maybe i_1 to most quickly move the torch back from right to left.
 # Patterns:
   # Cost: i_0+2i_1+i_{k-1}
     # i_0, i_1 to right
@@ -32,16 +39,18 @@ groups = [sorted([int(speed) for speed in raw_group[1:]]) for raw_group in raw_g
     # i_0 to left
     # i_0, i_{k-2} to right
     # i_0 to left
-# Continue by recursion until just two or three left.
+# Proof these are optimal: http://page.mi.fu-berlin.de/rote/Papers/pdf/Crossing+the+bridge+at+night.pdf
+# Continue by recursion until just one to three left.
+# One left:
+  # i_0 to right
 # Two left:
   # i_0, i_1 to right
 # Three left:
   # i_0, i_2 to right
   # i_0 to left
   # i_0, i_1 to right
-# For simplicity we won't actually move things right and left, we'll just keep track of how we would.
 
-for group in groups: # [1, 5, 9, 100, 103]
+for group in groups:
   left = group[:]
   moves = []
   cost = 0

@@ -1,0 +1,258 @@
+\documentclass[11pt]{article}
+
+\pdfpagewidth 8.5in
+\pdfpageheight 11in
+
+\setlength\topmargin{0in}
+\setlength\headheight{0in}
+\setlength\headsep{0.2in}
+\setlength\textheight{8in}
+\setlength\textwidth{6in}
+\setlength\oddsidemargin{0in}
+\setlength\evensidemargin{0in}
+\setlength\parindent{0.25in}
+\setlength\parskip{0.1in} 
+ 
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsthm}
+
+      \theoremstyle{plain}
+      \newtheorem{theorem}{Theorem}
+      \newtheorem{lemma}[theorem]{Lemma}
+      \newtheorem{corollary}[theorem]{Corollary}
+      \newtheorem{proposition}[theorem]{Proposition}
+      \newtheorem{conjecture}[theorem]{Conjecture}
+      \newtheorem{question}[theorem]{Question}
+      \newtheorem{example}[theorem]{Example}
+      
+      \theoremstyle{definition}
+      \newtheorem{definition}[theorem]{Definition}
+      
+      \theoremstyle{remark}
+      \newtheorem{remark}[theorem]{Remark}
+
+
+% Strategy uparrow shortcuts
+\newcommand{\win}{\uparrow}
+\newcommand{\prewin}{\uparrow_{\text{pre}}}
+\newcommand{\markwin}{\uparrow_{\text{mark}}}
+\newcommand{\tactwin}{\uparrow_{\text{tact}}}
+\newcommand{\ktactwin}[1]{\uparrow_{#1\text{-tact}}}
+\newcommand{\kmarkwin}[1]{\uparrow_{#1\text{-mark}}}
+\newcommand{\codewin}{\uparrow_{\text{code}}}
+\newcommand{\limitwin}{\uparrow_{\text{limit}}}
+
+\newcommand{\oneptcomp}[1]{#1^*}
+
+\newcommand{\congame}[2]{Con_{O,P}(#1,#2)}
+\newcommand{\clusgame}[2]{Clus_{O,P}(#1,#2)}
+
+\newcommand{\lfkpgame}[1]{LF_{K,P}(#1)}
+\newcommand{\lfklgame}[1]{LF_{K,L}(#1)}
+
+\newcommand{\pfgame}[1]{PF_{F,C}(#1)}
+
+\newcommand{\sigmaprodr}[1]{\Sigma\mathbb{R}^{#1}}
+\newcommand{\sigmaprodtwo}[1]{\Sigma2^{#1}}
+
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+
+\newcommand{\rest}{\restriction}
+
+\newcommand{\largecomment}[1]{}
+
+
+
+\begin{document}
+
+\begin{definition}
+Take an integer $b\geq 2$, and let $G(x)$ be a two-player game defined for any real number $x>1$ as follows: during each Round of the game, Player I first chooses an integer $n$ with $2\leq n \leq b$. Player II closes the Round by doing the same. The first player to choose a number such that the product of all chosen numbers is $x$ or greater is declared the winner.
+\end{definition}
+
+\begin{theorem}
+For numbers $x$ of the form
+  \[
+    2^kb^k < x  \leq 2^kb^{k+1}
+  \]
+Player I has a winning strategy in $G(x)$ which resolves during Round $k$.
+
+For numbers $x$ of the form
+  \[
+    2^kb^{k+1} < x \leq 2^{k+1}b^{k+1}
+  \]
+Player II has a winning strategy in $G(x)$ which resolves during Round $k$.
+\end{theorem}
+
+\begin{proof}
+We begin by inspecting the case where $k=0$. 
+
+For numbers $x$ of the form
+  \[
+    2^0b^0 < x  \leq 2^0b^{0+1} \Leftrightarrow 1 < x \leq b
+  \]
+Player I chooses $b$ as her first and only move in Round $0$, winning $G(x)$.
+
+For numbers $x$ of the form
+  \[
+    2^0b^{0+1} < x  \leq 2^{0+1}b^{0+1} \Leftrightarrow b < x \leq 2b
+  \]
+Player I chooses some $m$ with $2 \leq m \leq b$, and has not won the game. Player II finishes Round $0$ by
+  responding with $b$, and as $x \leq 2b \leq mb$, Player II has won $G(x)$.
+
+We now assume the theorem holds for $k$ by induction, and prove it holds for $k+1$.
+
+We first wish to prove that Player I has a winning strategy for $G(x)$ resolving in Round $k+1$, where
+  \[
+    2^{k+1}b^{k+1} < x  \leq 2^{k+1}b^{k+2}
+  \]
+
+Let $m = \left\lceil\frac{x}{2^{k+1}b^{k+1}}\right\rceil$, where $\lceil \cdot \rceil$ denotes the ceiling function, which returns the least integer greater than or equal to the input. Since $x > 2^{k+1}b^{k+1}$, $m$ is at least $2$. Since $x \leq 2^{k+1}b^{k+2}$, $m$ is at most $b$. Thus $m$ is a legal move in $G(x)$.
+
+We observe that we may express
+  \[
+    m = \frac{x+\epsilon}{2^{k+1}b^{k+1}}
+  \]
+where $\epsilon$ is some integer which satisfies $0 \leq \epsilon < 2^{k+1}b^{k+1}$.
+
+Then, we see that
+  \[
+    \frac{x}{m} = 
+    \frac{x}{\frac{x+\epsilon}{2^{k+1}b^{k+1}}} =
+    \frac{x}{x+\epsilon}2^{k+1}b^{k+1}
+  \]
+
+Since $0 \leq \epsilon$:
+  \[
+    \frac{x}{m} =
+    \frac{x}{x+\epsilon}2^{k+1}b^{k+1} \leq
+    \frac{x}{x}2^{k+1}b^{k+1} =
+    2^{k+1}b^{k+1}
+  \]
+
+Since $\epsilon < 2^{k+1}b^{k+1} < x$:
+  \[
+    \frac{x}{m} =
+    \frac{x}{x+\epsilon}2^{k+1}b^{k+1} >
+    \frac{x}{2x}2^{k+1}b^{k+1} =
+    \frac{1}{2}2^{k+1}b^{k+1} =
+    2^kb^{k+1}
+  \]
+
+As a result, $2^kb^{k+1} < \frac{x}{m} \leq 2^{k+1}b^{k+1}$, and by the induction hypothesis $G(\frac{x}{m})$ can be won by Player II during Round $k$. Let $s$ be the function representing this winning strategy. The game $G(\frac{x}{m})$ proceeds as follows:
+
+\begin{center}\begin{tabular}{c|c|c}
+$G(\frac{x}{m})$ & Player I & Player II \\\hline
+Round $0$ & $n_0$ & $s(n_0)$ \\\hline
+Round $1$ & $n_1$ & $s(n_0, n_1)$ \\\hline
+$\vdots$ & $\vdots$ & $\vdots$ \\\hline
+Round $k$ & $n_k$ & $s(n_0,\dots,n_k)$
+\end{tabular}\end{center}
+
+Since Player II won this game, we know 
+  \[
+    n_0s(n_0)\dots n_{k-1}s(n_0,\dots,n_{k-1})n_k < \frac{x}{m}
+  \]
+but 
+  \[
+    n_0s(n_0)\dots n_{k-1}s(n_0,\dots,n_{k-1})n_ks(n_0,\dots,n_k) \geq \frac{x}{m}
+  \]
+
+We claim the following strategy for Player I guarantees a victory in $G(x)$: Player I opens with $m$, and then uses Player II's strategy $s$ for the rest of the game.
+
+\begin{center}\begin{tabular}{c|c|c}
+$G(x)$ & Player I & Player II \\\hline
+Round $0$ & $m$ & $n_0$ \\\hline
+Round $1$ & $s(n_0)$ & $n_1$ \\\hline
+$\vdots$ & $\vdots$ & $\vdots$ \\\hline
+Round $k$ & $s(n_0,\dots,n_{k-1})$ & $n_k$ \\\hline
+Round $k+1$ & $s(n_0,\dots,n_k)$ & -
+\end{tabular}\end{center}
+
+Player I has now won, as
+  \[
+    mn_0s(n_0)\dots n_{k-1}s(n_0,\dots,n_{k-1})n_k < x
+  \]
+and 
+  \[
+    mn_0s(n_0)\dots n_{k-1}s(n_0,\dots,n_{k-1})n_ks(n_0,\dots,n_k) \geq x
+  \]
+
+We conclude by showing that Player II has a winning strategy for $G(x)$ resolving in Round $k+1$, where
+  \[
+    2^{k+1}b^{k+2} < x  \leq 2^{k+2}b^{k+2}
+  \]
+
+Let $2 \leq n \leq b$. We see that
+  \[
+    \frac{x}{n} \leq
+    \frac{x}{2} \leq
+    \frac{2^{k+2}b^{k+2}}{2} =
+    2^{k+1}b^{k+2}
+  \]
+and
+  \[
+    \frac{x}{n} \geq
+    \frac{x}{b} >
+    \frac{2^{k+1}b^{k+2}}{b} =
+    2^{k+1}b^{k+1}
+  \]
+
+As a result, $2^{k+1}b^{k+1} < \frac{x}{b} \leq 2^{k+1}b^{k+2}$, and by the result we just proved, $G(\frac{x}{n})$ can be won by Player I during Round $k+1$. Let $s$ be the function representing this winning strategy. The game $G(\frac{x}{n})$ proceeds as follows:
+
+\begin{center}\begin{tabular}{c|c|c}
+$G(\frac{x}{n})$ & Player I & Player II \\\hline
+Round $0$ & $s()$ & $n_0$ \\\hline
+Round $1$ & $s(n_0)$ & $n_1$ \\\hline
+$\vdots$ & $\vdots$ & $\vdots$ \\\hline
+Round $k+1$ & $s(n_0,\dots,n_k)$ & $n_{k+1}$
+\end{tabular}\end{center}
+
+Since Player I won this game, we know 
+  \[
+    s()n_0s(n_0)\dots n_{k-1}s(n_0,\dots,n_k) < \frac{x}{n}
+  \]
+but 
+  \[
+    s()n_0s(n_0)\dots n_{k-1}s(n_0,\dots,n_k)n_{k+1} \geq \frac{x}{n}
+  \]
+
+We claim the following strategy for Player II guarantees a victory in $G(x)$: Player I opens with some arbitrary play $2\leq m \leq b$, and then uses Player II's strategy $s$ for the rest of the game.
+
+\begin{center}\begin{tabular}{c|c|c}
+$G(x)$ & Player I & Player II \\\hline
+Round $0$ & $n$ & $s()$ \\\hline
+Round $1$ & $n_0$ & $s(n_0)$ \\\hline
+$\vdots$ & $\vdots$ & $\vdots$ \\\hline
+Round $k$ & $n_{k-1}$ & $s(n_0,\dots,n_{k-1})$ \\\hline
+Round $k+1$ & $n_k$ & $s(n_0,\dots,n_k)$
+\end{tabular}\end{center}
+
+Player II has now won, as
+  \[
+    ns()n_0s(n_0)\dots n_{k-1}s(n_0,\dots,n_{k-1})n_k < x
+  \]
+and 
+  \[
+    ns()n_0s(n_0)\dots n_{k-1}s(n_0,\dots,n_{k-1})n_ks(n_0,\dots,n_k) \geq x
+  \]
+
+This concludes the proof.
+\end{proof}
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
